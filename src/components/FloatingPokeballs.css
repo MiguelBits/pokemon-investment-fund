@@ -1,0 +1,148 @@
+.floating-pokeballs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.pokeball {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  animation: float 6s ease-in-out infinite;
+  animation-delay: var(--delay);
+  animation-duration: var(--duration);
+  opacity: 0.3;
+  filter: blur(0.5px);
+}
+
+.pokeball:nth-child(odd) {
+  animation-direction: reverse;
+}
+
+.pokeball:nth-child(3n) {
+  animation-duration: calc(var(--duration) * 1.5);
+}
+
+.pokeball:nth-child(4n) {
+  animation-duration: calc(var(--duration) * 0.8);
+}
+
+.pokeball-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 20px;
+  background: #ff0000;
+  border-radius: 20px 20px 0 0;
+  border: 2px solid #000;
+}
+
+.pokeball-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 20px;
+  background: #ffffff;
+  border-radius: 0 0 20px 20px;
+  border: 2px solid #000;
+}
+
+.pokeball-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+  border: 2px solid #000;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(20px, -30px) rotate(90deg);
+  }
+  50% {
+    transform: translate(-15px, -50px) rotate(180deg);
+  }
+  75% {
+    transform: translate(-25px, -20px) rotate(270deg);
+  }
+}
+
+/* Individual pokeball positioning */
+.pokeball:nth-child(1) {
+  top: 10%;
+  left: 10%;
+}
+
+.pokeball:nth-child(2) {
+  top: 20%;
+  right: 15%;
+}
+
+.pokeball:nth-child(3) {
+  top: 60%;
+  left: 5%;
+}
+
+.pokeball:nth-child(4) {
+  top: 70%;
+  right: 20%;
+}
+
+.pokeball:nth-child(5) {
+  top: 40%;
+  left: 30%;
+}
+
+.pokeball:nth-child(6) {
+  top: 30%;
+  right: 40%;
+}
+
+.pokeball:nth-child(7) {
+  top: 80%;
+  left: 60%;
+}
+
+.pokeball:nth-child(8) {
+  top: 15%;
+  left: 70%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pokeball {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .pokeball-top,
+  .pokeball-bottom {
+    width: 30px;
+    height: 15px;
+    border-radius: 15px 15px 0 0;
+  }
+  
+  .pokeball-bottom {
+    border-radius: 0 0 15px 15px;
+  }
+  
+  .pokeball-center {
+    width: 6px;
+    height: 6px;
+  }
+} 
