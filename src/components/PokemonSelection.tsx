@@ -21,57 +21,222 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showFinalMessage, setShowFinalMessage] = useState(false);
   const [email, setEmail] = useState('');
-  const [amount, setAmount] = useState('1000');
+  const [amount, setAmount] = useState('10000');
 
-  const pokemonList: Pokemon[] = [
-    {
-      key: "bulbasaur",
-      name: "Bulbasaur",
-      sprite: "🌱",
-      description: "The Seed Pokemon",
-      type: "Grass/Poison",
-      rarity: "Common",
-      investmentPotential: "High"
-    },
-    {
-      key: "charizard",
-      name: "Charizard",
-      sprite: "🔥",
-      description: "The Flame Pokemon",
-      type: "Fire/Flying",
-      rarity: "Rare",
-      investmentPotential: "Very High"
-    },
-    {
-      key: "blastoise",
-      name: "Blastoise",
-      sprite: "💧",
-      description: "The Shellfish Pokemon",
-      type: "Water",
-      rarity: "Rare",
-      investmentPotential: "High"
-    },
-    {
-      key: "venusaur",
-      name: "Venusaur",
-      sprite: "🌱",
-      description: "The Seed Pokemon",
-      type: "Grass/Poison",
-      rarity: "Rare",
-      investmentPotential: "High"
-    },
-    {
-      key: "mewtwo",
-      name: "Mewtwo",
-      sprite: "🧬",
-      description: "The Genetic Pokemon",
-      type: "Psychic",
-      rarity: "Legendary",
-      investmentPotential: "Extreme"
+  // Get available Pokemon based on investment amount
+  const getAvailablePokemon = (investmentAmount: number): Pokemon[] => {
+    if (investmentAmount >= 1000000) {
+      return [
+        {
+          key: "mewtwo",
+          name: "Mewtwo",
+          sprite: "🧬",
+          description: "The Genetic Pokemon",
+          type: "Psychic",
+          rarity: "Legendary",
+          investmentPotential: "Extreme"
+        }
+      ];
+    } else if (investmentAmount >= 500000) {
+      return [
+        {
+          key: "pikachu",
+          name: "Pikachu",
+          sprite: "⚡",
+          description: "The Electric Mouse Pokemon",
+          type: "Electric",
+          rarity: "Epic",
+          investmentPotential: "Very High"
+        },
+        {
+          key: "mewtwo",
+          name: "Mewtwo",
+          sprite: "🧬",
+          description: "The Genetic Pokemon",
+          type: "Psychic",
+          rarity: "Legendary",
+          investmentPotential: "Extreme"
+        }
+      ];
+    } else if (investmentAmount >= 100000) {
+      return [
+        {
+          key: "charmander",
+          name: "Charmander",
+          sprite: "🔥",
+          description: "The Lizard Pokemon",
+          type: "Fire",
+          rarity: "Rare",
+          investmentPotential: "High"
+        },
+        {
+          key: "pikachu",
+          name: "Pikachu",
+          sprite: "⚡",
+          description: "The Electric Mouse Pokemon",
+          type: "Electric",
+          rarity: "Epic",
+          investmentPotential: "Very High"
+        },
+        {
+          key: "mewtwo",
+          name: "Mewtwo",
+          sprite: "🧬",
+          description: "The Genetic Pokemon",
+          type: "Psychic",
+          rarity: "Legendary",
+          investmentPotential: "Extreme"
+        }
+      ];
+    } else if (investmentAmount >= 50000) {
+      return [
+        {
+          key: "squirtle",
+          name: "Squirtle",
+          sprite: "💧",
+          description: "The Tiny Turtle Pokemon",
+          type: "Water",
+          rarity: "Uncommon",
+          investmentPotential: "Medium"
+        },
+        {
+          key: "charmander",
+          name: "Charmander",
+          sprite: "🔥",
+          description: "The Lizard Pokemon",
+          type: "Fire",
+          rarity: "Rare",
+          investmentPotential: "High"
+        },
+        {
+          key: "pikachu",
+          name: "Pikachu",
+          sprite: "⚡",
+          description: "The Electric Mouse Pokemon",
+          type: "Electric",
+          rarity: "Epic",
+          investmentPotential: "Very High"
+        },
+        {
+          key: "mewtwo",
+          name: "Mewtwo",
+          sprite: "🧬",
+          description: "The Genetic Pokemon",
+          type: "Psychic",
+          rarity: "Legendary",
+          investmentPotential: "Extreme"
+        }
+      ];
+    } else {
+      return [
+        {
+          key: "bulbasaur",
+          name: "Bulbasaur",
+          sprite: "🌱",
+          description: "The Seed Pokemon",
+          type: "Grass/Poison",
+          rarity: "Common",
+          investmentPotential: "Low"
+        },
+        {
+          key: "squirtle",
+          name: "Squirtle",
+          sprite: "💧",
+          description: "The Tiny Turtle Pokemon",
+          type: "Water",
+          rarity: "Uncommon",
+          investmentPotential: "Medium"
+        },
+        {
+          key: "charmander",
+          name: "Charmander",
+          sprite: "🔥",
+          description: "The Lizard Pokemon",
+          type: "Fire",
+          rarity: "Rare",
+          investmentPotential: "High"
+        },
+        {
+          key: "pikachu",
+          name: "Pikachu",
+          sprite: "⚡",
+          description: "The Electric Mouse Pokemon",
+          type: "Electric",
+          rarity: "Epic",
+          investmentPotential: "Very High"
+        }
+      ];
     }
-  ];
+  };
+
+  const pokemonList = getAvailablePokemon(parseFloat(amount));
 
   const totalPokemon = pokemonList.length;
+
+  // Reset current index when Pokemon list changes
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [amount]);
+
+  // Get color based on Pokemon rarity
+  const getRarityColor = (rarity: string) => {
+    switch (rarity.toLowerCase()) {
+      case 'common':
+        return '#27ae60'; // Green
+      case 'uncommon':
+        return '#3498db'; // Blue
+      case 'rare':
+        return '#e74c3c'; // Red
+      case 'epic':
+        return '#9b59b6'; // Purple
+      case 'legendary':
+        return '#f39c12'; // Orange/Gold
+      default:
+        return '#2c3e50'; // Default dark
+    }
+  };
+
+  // Get amount suggestions based on selected Pokemon tier
+  const getAmountSuggestions = (selectedPokemon: Pokemon) => {
+    const pokemonKey = selectedPokemon.key;
+    
+    if (pokemonKey === 'mewtwo') {
+      return [
+        { label: '$1M', value: '1000000' },
+        { label: '$1.5M', value: '1500000' },
+        { label: '$2M', value: '2000000' },
+        { label: '$5M', value: '5000000' }
+      ];
+    } else if (pokemonKey === 'pikachu') {
+      return [
+        { label: '$500K', value: '500000' },
+        { label: '$600K', value: '600000' },
+        { label: '$750K', value: '750000' },
+        { label: '$900K', value: '900000' }
+      ];
+    } else if (pokemonKey === 'charmander') {
+      return [
+        { label: '$100K', value: '100000' },
+        { label: '$150K', value: '150000' },
+        { label: '$250K', value: '250000' },
+        { label: '$400K', value: '400000' }
+      ];
+    } else if (pokemonKey === 'squirtle') {
+      return [
+        { label: '$50K', value: '50000' },
+        { label: '$60K', value: '60000' },
+        { label: '$75K', value: '75000' },
+        { label: '$90K', value: '90000' }
+      ];
+    } else { // bulbasaur
+      return [
+        { label: '$10K', value: '10000' },
+        { label: '$20K', value: '20000' },
+        { label: '$30K', value: '30000' },
+        { label: '$40K', value: '40000' }
+      ];
+    }
+  };
 
   const rotateLeft = () => {
     setCurrentIndex((prev) => (prev - 1 + totalPokemon) % totalPokemon);
@@ -190,10 +355,15 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
                   required
                 />
                 <div className="amount-suggestions">
-                  <button type="button" onClick={() => setAmount('1000')}>$1K</button>
-                  <button type="button" onClick={() => setAmount('5000')}>$5K</button>
-                  <button type="button" onClick={() => setAmount('10000')}>$10K</button>
-                  <button type="button" onClick={() => setAmount('25000')}>$25K</button>
+                  {getAmountSuggestions(selectedPokemon).map((suggestion, index) => (
+                    <button 
+                      key={index} 
+                      type="button" 
+                      onClick={() => setAmount(suggestion.value)}
+                    >
+                      {suggestion.label}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
@@ -246,9 +416,16 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         <h1 className="selection-title">Choose Your Investment Pokemon!</h1>
         
         <div className="professor-text">
-          Welcome to the world of Pokemon investments! My name is Professor Oak. 
-          Before you stands a selection of Pokemon with excellent investment potential. 
-          Use the arrow keys or click the arrows to rotate between them, then press SPACE or click SELECT to choose your investment partner!
+          Welcome to Pokemon investments! I'm Professor Oak. 
+          <span className="pokemon-highlight" style={{ color: getRarityColor(pokemonList[currentIndex].rarity) }}>
+            {pokemonList[currentIndex].name}
+          </span> 
+          is perfect for your 
+          <span className="amount-highlight" style={{ color: getRarityColor(pokemonList[currentIndex].rarity) }}>
+            ${parseFloat(amount).toLocaleString()}
+          </span> 
+          investment.
+          Use arrows to browse, SPACE to select!
         </div>
         
         <div className="controls-hint">
@@ -277,10 +454,20 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
                 >
                   <div className="pokeball"></div>
                   <div className="pokemon-sprite">{pokemon.sprite}</div>
-                  <div className="pokemon-name">{pokemon.name}</div>
+                  <div 
+                    className="pokemon-name" 
+                    style={{ color: getRarityColor(pokemon.rarity) }}
+                  >
+                    {pokemon.name}
+                  </div>
                   <div className="pokemon-info">
                     <div className="pokemon-type">{pokemon.type}</div>
-                    <div className="pokemon-rarity">{pokemon.rarity}</div>
+                    <div 
+                      className="pokemon-rarity"
+                      style={{ color: getRarityColor(pokemon.rarity) }}
+                    >
+                      {pokemon.rarity}
+                    </div>
                   </div>
                 </div>
               );

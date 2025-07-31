@@ -61,6 +61,18 @@
   margin-right: auto;
 }
 
+.pokemon-highlight {
+  font-weight: bold;
+  text-shadow: 1px 1px 0px #fff;
+  transition: all 0.3s ease;
+}
+
+.amount-highlight {
+  font-weight: bold;
+  text-shadow: 1px 1px 0px #fff;
+  transition: all 0.3s ease;
+}
+
 .controls-hint {
   text-align: center;
   font-size: 10px;
