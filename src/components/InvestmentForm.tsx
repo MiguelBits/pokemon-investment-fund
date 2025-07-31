@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './InvestmentForm.css';
+import PokemonToast from './PokemonToast';
 
 interface InvestmentFormProps {
   onSubmit: (email: string, amount: number) => void;
@@ -9,18 +10,35 @@ const InvestmentForm: React.FC<InvestmentFormProps> = ({ onSubmit }) => {
   const [email, setEmail] = useState('');
   const [amount, setAmount] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toast, setToast] = useState<{
+    show: boolean;
+    message: string;
+    type: 'success' | 'error' | 'warning' | 'info';
+  }>({
+    show: false,
+    message: '',
+    type: 'info'
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!email || !amount) {
-      alert('Please fill in all fields!');
+      setToast({
+        show: true,
+        message: 'Please fill in all fields to continue your Pokemon investment journey!',
+        type: 'warning'
+      });
       return;
     }
 
     const numAmount = parseFloat(amount);
     if (isNaN(numAmount) || numAmount <= 0) {
-      alert('Please enter a valid investment amount!');
+      setToast({
+        show: true,
+        message: 'Please enter a valid investment amount! Your Pokemon partner deserves the best!',
+        type: 'error'
+      });
       return;
     }
 
@@ -31,6 +49,10 @@ const InvestmentForm: React.FC<InvestmentFormProps> = ({ onSubmit }) => {
       onSubmit(email, numAmount);
       setIsSubmitting(false);
     }, 1000);
+  };
+
+  const closeToast = () => {
+    setToast(prev => ({ ...prev, show: false }));
   };
 
   return (
@@ -155,6 +177,14 @@ const InvestmentForm: React.FC<InvestmentFormProps> = ({ onSubmit }) => {
           </p>
         </div>
       </div>
+      
+      <PokemonToast
+        show={toast.show}
+        message={toast.message}
+        type={toast.type}
+        onClose={closeToast}
+        duration={4000}
+      />
     </section>
   );
 };

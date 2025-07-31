@@ -1,13 +1,23 @@
+/* Import pixel font */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 .hero {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0c1445 0%, #1e3c72 25%, #2a5298 50%, #1e3c72 75%, #0c1445 100%);
+  background: linear-gradient(135deg, #87CEEB 0%, #98D8E8 25%, #B0E0E6 50%, #87CEEB 75%, #98D8E8 100%);
   position: relative;
   overflow: hidden;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding-top: 80px;
+  justify-content: center;
+  padding: 20px;
+  font-family: 'Press Start 2P', monospace;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
+/* Enhanced animated background */
 .hero-background {
   position: absolute;
   top: 0;
@@ -17,362 +27,1318 @@
   z-index: 1;
 }
 
-.pokemon-silhouettes {
+/* Animated clouds */
+.cloud {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50px;
+  opacity: 0.7;
+  animation: float 20s infinite linear;
 }
 
-.pokemon-silhouette {
+.cloud:before,
+.cloud:after {
+  content: '';
   position: absolute;
-  opacity: 0.1;
-  animation: float 6s ease-in-out infinite;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50px;
 }
 
-.pokemon-silhouette.charizard {
-  top: 10%;
+.cloud:before {
+  width: 50px;
+  height: 50px;
+  top: -20px;
+  left: 10px;
+}
+
+.cloud:after {
+  width: 30px;
+  height: 30px;
+  top: -10px;
+  right: 20px;
+}
+
+.cloud-1 {
+  width: 100px;
+  height: 40px;
+  top: 20%;
+  left: -100px;
+  animation-duration: 25s;
+}
+
+.cloud-2 {
+  width: 80px;
+  height: 35px;
+  top: 35%;
+  left: -80px;
+  animation-duration: 30s;
+  animation-delay: 5s;
+}
+
+.cloud-3 {
+  width: 120px;
+  height: 45px;
+  top: 15%;
+  left: -120px;
+  animation-duration: 35s;
+  animation-delay: 10s;
+}
+
+.cloud-4 {
+  width: 60px;
+  height: 30px;
+  top: 45%;
+  left: -60px;
+  animation-duration: 28s;
+  animation-delay: 15s;
+}
+
+/* Floating Pokemon TCG Cards */
+.floating-pokemon {
+  position: absolute;
+  width: 80px;
+  height: 110px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: pokemonFloat 15s infinite ease-in-out;
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.4));
+  border-radius: 8px;
+  transform-style: preserve-3d;
+  cursor: grab;
+  transition: all 0.3s ease;
+  user-select: none;
+  touch-action: none;
+}
+
+/* Additional Floating Cards Layer - Below Grass */
+.floating-cards-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.floating-cards-layer .floating-pokemon {
+  pointer-events: auto;
+  opacity: 0.3;
+  transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.2));
+  animation: hiddenCardGlow 4s ease-in-out infinite;
+}
+
+.floating-cards-layer .floating-pokemon:hover {
+  opacity: 1;
+  transform: scale(1.2) rotateY(15deg);
+  filter: drop-shadow(8px 8px 16px rgba(255, 215, 0, 0.8));
+  z-index: 10;
+}
+
+.floating-cards-layer .floating-pokemon.dragging {
+  opacity: 1;
+  z-index: 1000;
+}
+
+.floating-pokemon:hover {
+  transform: scale(1.2) rotateY(15deg);
+  filter: drop-shadow(8px 8px 16px rgba(255, 215, 0, 0.6));
+  animation-play-state: paused;
+  z-index: 10;
+  cursor: grabbing;
+}
+
+.floating-pokemon:active {
+  transform: scale(0.9) rotateY(-5deg);
+  filter: drop-shadow(2px 2px 4px rgba(255, 0, 0, 0.8));
+}
+
+.floating-pokemon.dragging {
+  cursor: grabbing;
+  animation-play-state: paused;
+  z-index: 1000;
+  transform: scale(1.3) rotateY(20deg);
+  filter: drop-shadow(12px 12px 20px rgba(255, 215, 0, 0.8));
+  transition: none;
+}
+
+.floating-pokemon.drag-over {
+  transform: scale(1.1) rotateY(10deg);
+  filter: drop-shadow(6px 6px 12px rgba(0, 255, 0, 0.6));
+}
+
+.pokemon-1 {
+  top: 20%;
+  left: 10%;
+  background-image: url('https://images.pokemontcg.io/base1/1.png');
+  animation: pokemonFloat 18s infinite ease-in-out, pokemonWander 25s infinite ease-in-out;
+  animation-delay: 0s, 2s;
+}
+
+.pokemon-2 {
+  top: 35%;
+  right: 15%;
+  background-image: url('https://images.pokemontcg.io/base1/2.png');
+  animation: pokemonFloat 22s infinite ease-in-out, pokemonWander2 30s infinite ease-in-out;
+  animation-delay: 3s, 5s;
+}
+
+.pokemon-3 {
+  top: 55%;
+  left: 20%;
+  background-image: url('https://images.pokemontcg.io/base1/3.png');
+  animation: pokemonFloat 25s infinite ease-in-out, pokemonWander3 28s infinite ease-in-out;
+  animation-delay: 6s, 8s;
+}
+
+.pokemon-4 {
+  top: 25%;
+  right: 25%;
+  background-image: url('https://images.pokemontcg.io/base1/15.png');
+  animation: pokemonFloat 20s infinite ease-in-out, pokemonWander 27s infinite ease-in-out;
+  animation-delay: 9s, 11s;
+}
+
+.pokemon-5 {
+  top: 45%;
+  left: 5%;
+  background-image: url('https://images.pokemontcg.io/base1/1.png');
+  animation: pokemonFloat 28s infinite ease-in-out, pokemonWander2 32s infinite ease-in-out;
+  animation-delay: 12s, 14s;
+}
+
+.pokemon-6 {
+  top: 15%;
+  left: 60%;
+  background-image: url('https://images.pokemontcg.io/base1/16.png');
+  animation-delay: 15s;
+  animation-duration: 24s;
+}
+
+.pokemon-7 {
+  top: 65%;
   right: 10%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(255, 0, 0, 0.3) 0%, transparent 70%);
+  background-image: url('https://images.pokemontcg.io/base1/17.png');
+  animation-delay: 2s;
+  animation-duration: 26s;
+}
+
+.pokemon-8 {
+  top: 10%;
+  left: 40%;
+  background-image: url('https://images.pokemontcg.io/base1/18.png');
+  animation-delay: 8s;
+  animation-duration: 21s;
+}
+
+.pokemon-9 {
+  top: 70%;
+  left: 30%;
+  background-image: url('https://images.pokemontcg.io/base1/19.png');
+  animation-delay: 14s;
+  animation-duration: 23s;
+}
+
+.pokemon-10 {
+  top: 30%;
+  right: 5%;
+  background-image: url('https://images.pokemontcg.io/base1/20.png');
+  animation-delay: 5s;
+  animation-duration: 27s;
+}
+
+.pokemon-11 {
+  top: 50%;
+  left: 70%;
+  background-image: url('https://images.pokemontcg.io/base1/21.png');
+  animation-delay: 11s;
+  animation-duration: 19s;
+}
+
+.pokemon-12 {
+  top: 75%;
+  right: 35%;
+  background-image: url('https://images.pokemontcg.io/base1/22.png');
+  animation-delay: 7s;
+  animation-duration: 25s;
+}
+
+.pokemon-13 {
+  top: 5%;
+  right: 45%;
+  background-image: url('https://images.pokemontcg.io/base1/23.png');
+  animation-delay: 13s;
+  animation-duration: 22s;
+}
+
+.pokemon-14 {
+  top: 60%;
+  left: 10%;
+  background-image: url('https://images.pokemontcg.io/base1/24.png');
+  animation-delay: 4s;
+  animation-duration: 20s;
+}
+
+.pokemon-15 {
+  top: 40%;
+  left: 50%;
+  background-image: url('https://images.pokemontcg.io/base1/25.png');
+  animation-delay: 10s;
+  animation-duration: 24s;
+}
+
+/* Additional Pokemon Cards - Layer Below Grass with Enhanced Movement */
+.pokemon-16 {
+  top: 70%;
+  left: 15%;
+  background-image: url('https://images.pokemontcg.io/base1/26.png');
+  animation: pokemonFloat 19s infinite ease-in-out, pokemonWander 25s infinite ease-in-out;
+  animation-delay: 2s, 0s;
+}
+
+.pokemon-17 {
+  top: 75%;
+  right: 25%;
+  background-image: url('https://images.pokemontcg.io/base1/27.png');
+  animation: pokemonFloat 23s infinite ease-in-out, pokemonWander2 30s infinite ease-in-out;
+  animation-delay: 7s, 5s;
+}
+
+.pokemon-18 {
+  top: 65%;
+  left: 45%;
+  background-image: url('https://images.pokemontcg.io/base1/28.png');
+  animation: pokemonFloat 21s infinite ease-in-out, pokemonWander3 28s infinite ease-in-out;
+  animation-delay: 12s, 10s;
+}
+
+.pokemon-19 {
+  top: 80%;
+  left: 70%;
+  background-image: url('https://images.pokemontcg.io/base1/29.png');
+  animation: pokemonFloat 26s infinite ease-in-out, pokemonWander 35s infinite ease-in-out;
+  animation-delay: 4s, 15s;
+}
+
+.pokemon-20 {
+  top: 72%;
+  right: 10%;
+  background-image: url('https://images.pokemontcg.io/base1/30.png');
+  animation: pokemonFloat 18s infinite ease-in-out, pokemonWander2 22s infinite ease-in-out;
+  animation-delay: 9s, 8s;
+}
+
+.pokemon-21 {
+  top: 68%;
+  left: 85%;
+  background-image: url('https://images.pokemontcg.io/base1/31.png');
+  animation: pokemonFloat 25s infinite ease-in-out, pokemonWander3 32s infinite ease-in-out;
+  animation-delay: 14s, 12s;
+}
+
+.pokemon-22 {
+  top: 85%;
+  left: 30%;
+  background-image: url('https://images.pokemontcg.io/base1/32.png');
+  animation: pokemonFloat 22s infinite ease-in-out, pokemonWander2 27s infinite ease-in-out;
+  animation-delay: 1s, 3s;
+}
+
+.pokemon-23 {
+  top: 78%;
+  right: 45%;
+  background-image: url('https://images.pokemontcg.io/base1/33.png');
+  animation: pokemonFloat 20s infinite ease-in-out, pokemonWander 24s infinite ease-in-out;
+  animation-delay: 6s, 7s;
+}
+
+.pokemon-24 {
+  top: 82%;
+  left: 55%;
+  background-image: url('https://images.pokemontcg.io/base1/34.png');
+  animation: pokemonFloat 24s infinite ease-in-out, pokemonWander3 29s infinite ease-in-out;
+  animation-delay: 11s, 9s;
+}
+
+.pokemon-25 {
+  top: 88%;
+  right: 20%;
+  background-image: url('https://images.pokemontcg.io/base1/35.png');
+  animation: pokemonFloat 17s infinite ease-in-out, pokemonWander2 21s infinite ease-in-out;
+  animation-delay: 3s, 6s;
+}
+
+.pokemon-26 {
+  top: 74%;
+  left: 25%;
+  background-image: url('https://images.pokemontcg.io/base1/36.png');
+  animation: pokemonFloat 28s infinite ease-in-out, pokemonWander2 33s infinite ease-in-out;
+  animation-delay: 8s, 11s;
+}
+
+.pokemon-27 {
+  top: 86%;
+  left: 40%;
+  background-image: url('https://images.pokemontcg.io/base1/37.png');
+  animation: pokemonFloat 19s infinite ease-in-out, pokemonWander3 26s infinite ease-in-out;
+  animation-delay: 13s, 4s;
+}
+
+.pokemon-28 {
+  top: 76%;
+  right: 35%;
+  background-image: url('https://images.pokemontcg.io/base1/38.png');
+  animation: pokemonFloat 23s infinite ease-in-out, pokemonWander 31s infinite ease-in-out;
+  animation-delay: 5s, 13s;
+}
+
+.pokemon-29 {
+  top: 84%;
+  left: 60%;
+  background-image: url('https://images.pokemontcg.io/base1/39.png');
+  animation: pokemonFloat 21s infinite ease-in-out, pokemonWander2 34s infinite ease-in-out;
+  animation-delay: 10s, 2s;
+}
+
+.pokemon-30 {
+  top: 90%;
+  right: 15%;
+  background-image: url('https://images.pokemontcg.io/base1/40.png');
+  animation: pokemonFloat 26s infinite ease-in-out, pokemonWander3 36s infinite ease-in-out;
+  animation-delay: 15s, 14s;
+}
+
+
+
+/* Butterflies */
+.butterfly {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: linear-gradient(45deg, #FF69B4, #FFB6C1);
   border-radius: 50%;
+  animation: butterflyFloat 12s infinite ease-in-out;
+}
+
+.butterfly:before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(45deg, #FF69B4, #FFB6C1);
+  border-radius: 50%;
+  animation: wingFlap 0.5s infinite ease-in-out;
+}
+
+.butterfly:after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(45deg, #FF69B4, #FFB6C1);
+  border-radius: 50%;
+  animation: wingFlap 0.5s infinite ease-in-out reverse;
+}
+
+.butterfly-1 {
+  top: 30%;
+  left: 20%;
   animation-delay: 0s;
 }
 
-.pokemon-silhouette.pikachu {
-  top: 60%;
-  left: 5%;
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(circle, rgba(255, 255, 0, 0.3) 0%, transparent 70%);
+.butterfly-2 {
+  top: 40%;
+  right: 30%;
+  animation-delay: 3s;
+}
+
+.butterfly-3 {
+  top: 20%;
+  left: 70%;
+  animation-delay: 6s;
+}
+
+
+
+/* Enhanced landscape */
+.landscape-elements {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to top, #228B22 0%, #32CD32 30%, #90EE90 60%, #98FB98 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Mountain silhouettes */
+.mountain {
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 80px solid #2F4F2F;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.mountain-1 {
+  left: 10%;
+  border-bottom-width: 60px;
+}
+
+.mountain-2 {
+  left: 25%;
+  border-bottom-width: 100px;
+}
+
+.mountain-3 {
+  left: 40%;
+  border-bottom-width: 70px;
+}
+
+.mountain-4 {
+  left: 55%;
+  border-bottom-width: 90px;
+}
+
+.mountain-5 {
+  left: 70%;
+  border-bottom-width: 50px;
+}
+
+.mountain-6 {
+  left: 85%;
+  border-bottom-width: 80px;
+}
+
+/* Grass patches */
+.grass-patch {
+  position: absolute;
+  bottom: 0;
+  width: 100px;
+  height: 20px;
+  background: linear-gradient(to top, #228B22 0%, #32CD32 100%);
+  border-radius: 50% 50% 0 0;
+  pointer-events: none;
+}
+
+.grass-1 {
+  left: 15%;
+  width: 80px;
+  height: 15px;
+}
+
+.grass-2 {
+  left: 35%;
+  width: 120px;
+  height: 25px;
+}
+
+.grass-3 {
+  left: 60%;
+  width: 90px;
+  height: 18px;
+}
+
+.grass-4 {
+  left: 80%;
+  width: 70px;
+  height: 12px;
+}
+
+/* Animated particles */
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.6);
   border-radius: 50%;
+  animation: particleFloat 8s infinite linear;
+}
+
+.particle-1 {
+  top: 20%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.particle-2 {
+  top: 35%;
+  left: 85%;
   animation-delay: 2s;
 }
 
-.pokemon-silhouette.mewtwo {
-  top: 20%;
+.particle-3 {
+  top: 50%;
   left: 15%;
-  width: 180px;
-  height: 180px;
-  background: radial-gradient(circle, rgba(128, 0, 128, 0.3) 0%, transparent 70%);
-  border-radius: 50%;
   animation-delay: 4s;
 }
 
-.pokemon-silhouette.blastoise {
-  bottom: 20%;
-  right: 20%;
-  width: 160px;
-  height: 160px;
-  background: radial-gradient(circle, rgba(0, 100, 255, 0.3) 0%, transparent 70%);
-  border-radius: 50%;
-  animation-delay: 1s;
+.particle-4 {
+  top: 25%;
+  left: 75%;
+  animation-delay: 6s;
 }
 
+/* Main content */
 .hero-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
   position: relative;
-  z-index: 2;
+  z-index: 3;
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
 }
 
-.hero-text {
-  color: white;
+/* Pokémon-style logo */
+.pokemon-logo {
+  margin-bottom: 40px;
+  position: relative;
 }
 
-.hero-title {
-  font-size: 3.5rem;
+.logo-text {
+  font-size: 3rem;
   font-weight: bold;
-  margin-bottom: 1.5rem;
-  line-height: 1.2;
+  color: #ffd700;
+  text-shadow: 
+    4px 0 0 #000,
+    -4px 0 0 #000,
+    0 4px 0 #000,
+    0 -4px 0 #000,
+    2px 2px 0 #000,
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000;
+  margin: 0;
+  animation: logoGlow 3s ease-in-out infinite;
 }
 
-.title-line {
-  display: block;
-  animation: slideInLeft 1s ease-out;
-}
-
-.title-line.highlight {
-  background: linear-gradient(45deg, #ff6b6b, #ff8e53, #ff6b6b);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: slideInLeft 1s ease-out 0.3s both, gradientShift 3s ease-in-out infinite;
-}
-
-.hero-subtitle {
+.logo-subtitle {
   font-size: 1.2rem;
-  margin-bottom: 2rem;
-  opacity: 0.9;
-  line-height: 1.6;
-  animation: slideInLeft 1s ease-out 0.6s both;
+  color: #ffffff;
+  text-shadow: 
+    2px 0 0 #000,
+    -2px 0 0 #000,
+    0 2px 0 #000,
+    0 -2px 0 #000;
+  margin-top: 10px;
+  letter-spacing: 2px;
 }
 
-.hero-stats {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  animation: slideInLeft 1s ease-out 0.9s both;
+.logo-tm {
+  position: absolute;
+  top: 0;
+  right: -30px;
+  font-size: 0.8rem;
+  color: #ffffff;
+  text-shadow: 1px 0 0 #000;
 }
 
-.stat {
+/* Pokémon Card Collection Showcase */
+.card-showcase {
+  margin-bottom: 40px;
   text-align: center;
 }
 
-.stat-number {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #ff6b6b;
-  display: block;
-}
-
-.stat-label {
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-.hero-cta {
-  display: flex;
-  gap: 1rem;
-  animation: slideInLeft 1s ease-out 1.2s both;
-}
-
-.cta-button {
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 50px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.cta-button.primary {
-  background: linear-gradient(45deg, #ff6b6b, #ff8e53);
-  color: white;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-}
-
-.cta-button.primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
-}
-
-.cta-button.secondary {
-  background: transparent;
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.cta-button.secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-3px);
-}
-
-.pokeball-icon {
+.showcase-title {
   font-size: 1.2rem;
-  animation: spin 2s linear infinite;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 
+    2px 0 0 #000,
+    -2px 0 0 #000,
+    0 2px 0 #000,
+    0 -2px 0 #000;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+  animation: titleGlow 3s ease-in-out infinite;
 }
 
-.hero-visual {
+.cards-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  animation: slideInRight 1s ease-out 0.6s both;
+  gap: 20px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
 }
 
-.floating-card {
+.pokemon-card {
   position: relative;
-  width: 300px;
-  height: 400px;
-  background: linear-gradient(145deg, #ff6b6b, #ff8e53);
-  border-radius: 20px;
-  padding: 1.5rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  animation: float 4s ease-in-out infinite;
+  width: 120px;
+  height: 160px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border: 3px solid #ffd700;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: grab;
+  transition: all 0.3s ease;
   transform-style: preserve-3d;
+  user-select: none;
+  touch-action: none;
 }
 
-.card-glow {
+.pokemon-card:hover {
+  transform: translateY(-15px) rotateY(15deg) scale(1.05);
+  box-shadow: 
+    0 20px 40px rgba(255, 215, 0, 0.6),
+    0 0 30px rgba(255, 215, 0, 0.4);
+  z-index: 10;
+  cursor: grabbing;
+}
+
+.pokemon-card:active {
+  transform: translateY(-5px) rotateY(-5deg) scale(0.95);
+  box-shadow: 
+    0 10px 20px rgba(255, 0, 0, 0.6),
+    0 0 15px rgba(255, 0, 0, 0.4);
+}
+
+.pokemon-card.dragging {
+  cursor: grabbing;
+  z-index: 1000;
+  transform: translateY(-20px) rotateY(25deg) scale(1.1);
+  box-shadow: 
+    0 25px 50px rgba(255, 215, 0, 0.8),
+    0 0 40px rgba(255, 215, 0, 0.6);
+  transition: none;
+}
+
+.pokemon-card.drag-over {
+  transform: translateY(-10px) rotateY(5deg) scale(1.02);
+  box-shadow: 
+    0 15px 30px rgba(0, 255, 0, 0.6),
+    0 0 20px rgba(0, 255, 0, 0.4);
+}
+
+.card-holographic {
   position: absolute;
-  top: -10px;
-  left: -10px;
-  right: -10px;
-  bottom: -10px;
-  background: linear-gradient(45deg, #ff6b6b, #ff8e53, #ff6b6b);
-  border-radius: 25px;
-  opacity: 0.3;
-  filter: blur(10px);
-  animation: pulse 2s ease-in-out infinite;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  animation: holographic 3s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .card-content {
   position: relative;
   z-index: 2;
+  padding: 10px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  color: white;
-}
-
-.card-header {
-  display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
 }
 
 .card-name {
-  font-size: 1.5rem;
+  font-size: 0.8rem;
   font-weight: bold;
+  color: #ffffff;
+  text-shadow: 1px 0 0 #000;
+  margin-bottom: 5px;
 }
 
-.card-hp {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 0.3rem 0.8rem;
-  border-radius: 15px;
-  font-size: 0.9rem;
+.card-type {
+  font-size: 0.6rem;
+  color: #ffd700;
+  text-shadow: 1px 0 0 #000;
+  margin-bottom: 5px;
 }
 
-.card-image {
-  flex: 1;
+.card-rarity {
+  font-size: 0.5rem;
+  color: #ff6b6b;
+  text-shadow: 1px 0 0 #000;
+  margin-bottom: 5px;
+}
+
+.card-potential {
+  font-size: 0.6rem;
+  font-weight: bold;
+  color: #00ff88;
+  text-shadow: 1px 0 0 #000;
+  animation: potentialGlow 2s ease-in-out infinite;
+}
+
+.card-glow {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: #ffd700;
+  opacity: 0;
+  border-radius: 12px;
+  animation: cardGlow 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.card-1 .card-glow {
+  animation-delay: 0s;
+}
+
+.card-2 .card-glow {
+  animation-delay: 0.7s;
+}
+
+.card-3 .card-glow {
+  animation-delay: 1.4s;
+}
+
+.showcase-subtitle {
+  font-size: 0.7rem;
+  color: #cccccc;
+  text-shadow: 1px 0 0 #000;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+/* Game-style buttons */
+.game-buttons {
   display: flex;
-  align-items: center;
   justify-content: center;
-  margin: 1rem 0;
+  gap: 20px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
 }
 
-.pokemon-sprite {
+.game-button {
+  padding: 15px 30px;
+  border: 4px solid #ffffff;
+  background: #000000;
+  color: #ffffff;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.8rem;
+  cursor: pointer;
+  position: relative;
+  text-shadow: 1px 0 0 #000;
+  box-shadow: 
+    inset 2px 2px 0 rgba(255, 255, 255, 0.3),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.game-button:hover {
+  background: #333333;
+  transform: translateY(-2px);
+  box-shadow: 
+    inset 2px 2px 0 rgba(255, 255, 255, 0.3),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.3),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.game-button.primary {
+  background: #ff6b6b;
+  border-color: #ffd700;
+}
+
+.game-button.primary:hover {
+  background: #ff8e53;
+}
+
+.button-glow {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: #ffd700;
+  opacity: 0;
+  animation: buttonGlow 2s ease-in-out infinite;
+}
+
+/* Pokemon Image Container */
+.pokemon-image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.hero-pokemon-image {
   width: 120px;
   height: 120px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
+  object-fit: contain;
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.3));
+  animation: pokeballShake 1.2s ease-in-out infinite;
+  transition: transform 0.3s ease;
 }
 
-.card-value {
-  text-align: center;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #ffd700;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+.hero-pokemon-image:hover {
+  transform: scale(1.1);
+  animation-play-state: paused;
 }
 
-.scroll-indicator {
+@keyframes pokeballShake {
+  0%, 100% {
+    transform: translateX(0px) rotate(0deg);
+  }
+  10% {
+    transform: translateX(-3px) rotate(-2deg);
+  }
+  20% {
+    transform: translateX(3px) rotate(2deg);
+  }
+  30% {
+    transform: translateX(-2px) rotate(-1deg);
+  }
+  40% {
+    transform: translateX(2px) rotate(1deg);
+  }
+  50% {
+    transform: translateX(-1px) rotate(-0.5deg);
+  }
+  60% {
+    transform: translateX(1px) rotate(0.5deg);
+  }
+  70% {
+    transform: translateX(-0.5px) rotate(-0.25deg);
+  }
+  80% {
+    transform: translateX(0.5px) rotate(0.25deg);
+  }
+  90% {
+    transform: translateX(0px) rotate(0deg);
+  }
+}
+
+@keyframes pokemonFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-20px) rotate(90deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(-30px) rotate(270deg);
+  }
+}
+
+@keyframes pokemonWander {
+  0% {
+    transform: translateX(0px) translateY(0px);
+  }
+  20% {
+    transform: translateX(200px) translateY(-50px);
+  }
+  40% {
+    transform: translateX(400px) translateY(30px);
+  }
+  60% {
+    transform: translateX(200px) translateY(80px);
+  }
+  80% {
+    transform: translateX(-100px) translateY(20px);
+  }
+  100% {
+    transform: translateX(0px) translateY(0px);
+  }
+}
+
+@keyframes pokemonWander2 {
+  0% {
+    transform: translateX(0px) translateY(0px);
+  }
+  25% {
+    transform: translateX(-300px) translateY(-80px);
+  }
+  50% {
+    transform: translateX(-150px) translateY(100px);
+  }
+  75% {
+    transform: translateX(250px) translateY(-30px);
+  }
+  100% {
+    transform: translateX(0px) translateY(0px);
+  }
+}
+
+@keyframes pokemonWander3 {
+  0% {
+    transform: translateX(0px) translateY(0px);
+  }
+  33% {
+    transform: translateX(350px) translateY(60px);
+  }
+  66% {
+    transform: translateX(-200px) translateY(-40px);
+  }
+  100% {
+    transform: translateX(0px) translateY(0px);
+  }
+}
+
+
+
+/* Press Start section - positioned at bottom like footer */
+.press-start-section {
   position: absolute;
-  bottom: 2rem;
+  bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
-  color: white;
   text-align: center;
-  animation: bounce 2s infinite;
+  z-index: 3;
+}
+
+.press-start-text {
+  font-size: 1rem;
+  color: #ffffff;
+  text-shadow: 
+    2px 0 0 #000,
+    -2px 0 0 #000,
+    0 2px 0 #000,
+    0 -2px 0 #000;
+  margin-bottom: 10px;
+  animation: blink 1.5s infinite;
 }
 
 .scroll-arrow {
   width: 0;
   height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 15px solid white;
-  margin: 0 auto 0.5rem;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 12px solid #ffffff;
+  margin: 0 auto 10px;
+  filter: drop-shadow(2px 0 0 #000) drop-shadow(-2px 0 0 #000);
 }
 
+.scroll-text {
+  font-size: 0.7rem;
+  color: #ffffff;
+  text-shadow: 1px 0 0 #000;
+}
+
+/* Copyright */
+.copyright {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  color: #ffffff;
+  text-shadow: 1px 0 0 #000;
+  z-index: 3;
+}
+
+/* Animations */
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
+  0% {
+    transform: translateX(-100px);
+  }
+  100% {
+    transform: translateX(calc(100vw + 100px));
+  }
+}
+
+
+
+@keyframes butterflyFloat {
+  0% {
+    transform: translateY(0) translateX(0);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-5px) translateX(5px);
+  }
+  100% {
+    transform: translateY(0) translateX(0);
   }
 }
 
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes gradientShift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-@keyframes spin {
-  from {
+@keyframes wingFlap {
+  0% {
     transform: rotate(0deg);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(0deg);
   }
 }
 
-@keyframes pulse {
+
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) translateX(50px);
+    opacity: 0;
+  }
+}
+
+@keyframes logoGlow {
   0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
+    text-shadow: 
+      4px 0 0 #000,
+      -4px 0 0 #000,
+      0 4px 0 #000,
+      0 -4px 0 #000,
+      2px 2px 0 #000,
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000;
   }
   50% {
-    opacity: 0.5;
-    transform: scale(1.05);
+    text-shadow: 
+      4px 0 0 #000,
+      -4px 0 0 #000,
+      0 4px 0 #000,
+      0 -4px 0 #000,
+      2px 2px 0 #000,
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+      0 0 10px #ffd700;
   }
 }
 
+
+
+@keyframes buttonGlow {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes titleGlow {
+  0%, 100% {
+    text-shadow: 
+      2px 0 0 #000,
+      -2px 0 0 #000,
+      0 2px 0 #000,
+      0 -2px 0 #000;
+  }
+  50% {
+    text-shadow: 
+      2px 0 0 #000,
+      -2px 0 0 #000,
+      0 2px 0 #000,
+      0 -2px 0 #000,
+      0 0 15px #ffd700;
+  }
+}
+
+@keyframes holographic {
+  0% {
+    transform: translateX(-100%) translateY(-100%);
+  }
+  50% {
+    transform: translateX(100%) translateY(100%);
+  }
+  100% {
+    transform: translateX(-100%) translateY(-100%);
+  }
+}
+
+@keyframes potentialGlow {
+  0%, 100% {
+    text-shadow: 1px 0 0 #000;
+  }
+  50% {
+    text-shadow: 
+      1px 0 0 #000,
+      0 0 8px #00ff88;
+  }
+}
+
+@keyframes cardGlow {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Mouse trail effect */
+.mouse-trail {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, #ffd700 0%, rgba(255, 215, 0, 0.3) 70%, transparent 100%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  animation: mouseTrail 0.5s ease-out forwards;
+}
+
+/* Interactive sparkles */
+.sparkle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #ffd700;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: sparkleFloat 2s ease-out forwards;
+}
+
+/* Drag feedback effects */
+.drag-feedback {
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  animation: dragFeedback 0.3s ease-out;
+}
+
+/* Drop zone indicator */
+.drop-zone {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border: 3px dashed #ffd700;
+  border-radius: 15px;
+  background: rgba(255, 215, 0, 0.1);
+  pointer-events: none;
+  z-index: 999;
+  animation: dropZonePulse 1s ease-in-out infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.drop-zone.active {
+  opacity: 1;
+}
+
+@keyframes mouseTrail {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+}
+
+@keyframes sparkleFloat {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-20px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.5);
+  }
+}
+
+@keyframes dragFeedback {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes dropZonePulse {
+  0%, 100% {
+    border-color: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    border-color: #ff6b6b;
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+  }
+}
+
+@keyframes hiddenCardGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.4));
+  }
+}
+
+/* Responsive design */
 @media (max-width: 768px) {
   .hero-content {
-    grid-template-columns: 1fr;
-    text-align: center;
+    padding: 0 20px;
   }
   
-  .hero-title {
-    font-size: 2.5rem;
+  .logo-text {
+    font-size: 2rem;
   }
   
-  .hero-stats {
-    justify-content: center;
+  .logo-subtitle {
+    font-size: 0.9rem;
   }
   
-  .hero-cta {
-    justify-content: center;
-    flex-wrap: wrap;
+  .card-showcase {
+    margin-bottom: 30px;
   }
   
-  .floating-card {
-    width: 250px;
-    height: 350px;
+  .cards-container {
+    gap: 15px;
+  }
+  
+  .pokemon-card {
+    width: 100px;
+    height: 140px;
+  }
+  
+  .game-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .hero-pokemon-image {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .legendary-silhouette {
+    width: 200px;
+    height: 150px;
   }
 } 

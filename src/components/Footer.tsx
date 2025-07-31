@@ -1,33 +1,15 @@
 import React from 'react';
 import './Footer.css';
-
-interface Pokemon {
-  key: string;
-  name: string;
-  sprite: string;
-  description: string;
-  type: string;
-  rarity: string;
-  investmentPotential: string;
-}
-
-interface Investment {
-  email: string;
-  amount: number;
-  selectedPokemon: Pokemon;
-  timestamp: Date;
-}
+import { Investment, InvestmentStats } from '../lib/supabase';
 
 interface FooterProps {
   investments: Investment[];
+  stats: InvestmentStats;
+  loading: boolean;
 }
 
-const Footer: React.FC<FooterProps> = ({ investments }) => {
-  const totalInvestments = investments.length;
-  const totalAmount = investments.reduce((sum, inv) => sum + inv.amount, 0);
-  const averageAmount = totalInvestments > 0 ? totalAmount / totalInvestments : 0;
-
-  const recentInvestments = investments.slice(-3).reverse();
+const Footer: React.FC<FooterProps> = ({ investments, stats, loading }) => {
+  const recentInvestments = investments.slice(0, 3);
 
   return (
     <footer className="footer">
@@ -39,15 +21,21 @@ const Footer: React.FC<FooterProps> = ({ investments }) => {
           </h3>
           <div className="stats-grid">
             <div className="stat-card">
-              <div className="stat-number">{totalInvestments}</div>
+              <div className="stat-number">
+                {loading ? '...' : stats.total_users}
+              </div>
               <div className="stat-label">Total Investors</div>
             </div>
             <div className="stat-card">
-              <div className="stat-number">${totalAmount.toLocaleString()}</div>
+              <div className="stat-number">
+                {loading ? '...' : `$${stats.total_amount.toLocaleString()}`}
+              </div>
               <div className="stat-label">Total Invested</div>
             </div>
             <div className="stat-card">
-              <div className="stat-number">${averageAmount.toLocaleString()}</div>
+              <div className="stat-number">
+                {loading ? '...' : `$${stats.average_amount.toLocaleString()}`}
+              </div>
               <div className="stat-label">Average Investment</div>
             </div>
           </div>
@@ -63,15 +51,13 @@ const Footer: React.FC<FooterProps> = ({ investments }) => {
               {recentInvestments.map((investment, index) => (
                 <div key={index} className="investment-item">
                   <div className="investment-pokemon">
-                    <span className="pokemon-emoji">
-                      {investment.selectedPokemon.sprite}
-                    </span>
-                    <span className="pokemon-name">{investment.selectedPokemon.name}</span>
+                    <span className="pokemon-emoji">⚪</span>
+                    <span className="pokemon-name">{investment.pokemon_name}</span>
                   </div>
                   <div className="investment-details">
                     <div className="investment-amount">${investment.amount.toLocaleString()}</div>
                     <div className="investment-time">
-                      {investment.timestamp.toLocaleDateString()}
+                      {investment.created_at ? new Date(investment.created_at).toLocaleDateString() : 'N/A'}
                     </div>
                   </div>
                 </div>

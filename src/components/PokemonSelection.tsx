@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './PokemonSelection.css';
+import { investmentService } from '../lib/investmentService';
 
 interface Pokemon {
   key: string;
@@ -22,6 +23,8 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
   const [showFinalMessage, setShowFinalMessage] = useState(false);
   const [email, setEmail] = useState('');
   const [amount, setAmount] = useState('10000');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   // Get available Pokemon based on investment amount
   const getAvailablePokemon = (investmentAmount: number): Pokemon[] => {
@@ -30,7 +33,7 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         {
           key: "mewtwo",
           name: "Mewtwo",
-          sprite: "🧬",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png",
           description: "The Genetic Pokemon",
           type: "Psychic",
           rarity: "Legendary",
@@ -42,7 +45,7 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         {
           key: "pikachu",
           name: "Pikachu",
-          sprite: "⚡",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
           description: "The Electric Mouse Pokemon",
           type: "Electric",
           rarity: "Epic",
@@ -51,7 +54,7 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         {
           key: "mewtwo",
           name: "Mewtwo",
-          sprite: "🧬",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png",
           description: "The Genetic Pokemon",
           type: "Psychic",
           rarity: "Legendary",
@@ -63,7 +66,7 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         {
           key: "charmander",
           name: "Charmander",
-          sprite: "🔥",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
           description: "The Lizard Pokemon",
           type: "Fire",
           rarity: "Rare",
@@ -72,7 +75,7 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         {
           key: "pikachu",
           name: "Pikachu",
-          sprite: "⚡",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
           description: "The Electric Mouse Pokemon",
           type: "Electric",
           rarity: "Epic",
@@ -81,7 +84,7 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         {
           key: "mewtwo",
           name: "Mewtwo",
-          sprite: "🧬",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png",
           description: "The Genetic Pokemon",
           type: "Psychic",
           rarity: "Legendary",
@@ -93,7 +96,7 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         {
           key: "squirtle",
           name: "Squirtle",
-          sprite: "💧",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png",
           description: "The Tiny Turtle Pokemon",
           type: "Water",
           rarity: "Uncommon",
@@ -102,7 +105,7 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         {
           key: "charmander",
           name: "Charmander",
-          sprite: "🔥",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
           description: "The Lizard Pokemon",
           type: "Fire",
           rarity: "Rare",
@@ -111,7 +114,7 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         {
           key: "pikachu",
           name: "Pikachu",
-          sprite: "⚡",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
           description: "The Electric Mouse Pokemon",
           type: "Electric",
           rarity: "Epic",
@@ -120,7 +123,7 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         {
           key: "mewtwo",
           name: "Mewtwo",
-          sprite: "🧬",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png",
           description: "The Genetic Pokemon",
           type: "Psychic",
           rarity: "Legendary",
@@ -132,7 +135,7 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         {
           key: "bulbasaur",
           name: "Bulbasaur",
-          sprite: "🌱",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
           description: "The Seed Pokemon",
           type: "Grass/Poison",
           rarity: "Common",
@@ -141,7 +144,7 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         {
           key: "squirtle",
           name: "Squirtle",
-          sprite: "💧",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png",
           description: "The Tiny Turtle Pokemon",
           type: "Water",
           rarity: "Uncommon",
@@ -150,7 +153,7 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         {
           key: "charmander",
           name: "Charmander",
-          sprite: "🔥",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
           description: "The Lizard Pokemon",
           type: "Fire",
           rarity: "Rare",
@@ -159,11 +162,20 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
         {
           key: "pikachu",
           name: "Pikachu",
-          sprite: "⚡",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
           description: "The Electric Mouse Pokemon",
           type: "Electric",
           rarity: "Epic",
           investmentPotential: "Very High"
+        },
+        {
+          key: "mewtwo",
+          name: "Mewtwo",
+          sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png",
+          description: "The Genetic Pokemon",
+          type: "Psychic",
+          rarity: "Legendary",
+          investmentPotential: "Extreme"
         }
       ];
     }
@@ -188,11 +200,30 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
       case 'rare':
         return '#e74c3c'; // Red
       case 'epic':
-        return '#9b59b6'; // Purple
+        return '#f39c12'; // Orange/Gold (was Purple, now swapped with Legendary)
       case 'legendary':
-        return '#f39c12'; // Orange/Gold
+        return '#9b59b6'; // Purple (was Orange/Gold, now swapped with Epic)
       default:
         return '#2c3e50'; // Default dark
+    }
+  };
+
+  // Get color based on Pokemon type (classic Pokemon game colors)
+  const getTypeColor = (type: string) => {
+    switch (type.toLowerCase()) {
+      case 'fire':
+        return '#F08030'; // Classic Fire orange
+      case 'water':
+        return '#6890F0'; // Classic Water blue
+      case 'grass':
+      case 'grass/poison':
+        return '#78C850'; // Classic Grass green
+      case 'electric':
+        return '#F8D030'; // Classic Electric yellow
+      case 'psychic':
+        return '#F85888'; // Classic Psychic pink
+      default:
+        return '#A8A878'; // Classic Normal gray
     }
   };
 
@@ -251,14 +282,39 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
     setShowConfirmation(true);
   };
 
-  const confirmSelection = () => {
+  const confirmSelection = async () => {
     if (selectedPokemon && email) {
-      setShowConfirmation(false);
-      setShowFinalMessage(true);
-      // Call the parent callback after a delay to show the final message
-      setTimeout(() => {
-        onPokemonSelected(selectedPokemon, email, parseFloat(amount));
-      }, 3000);
+      setIsSubmitting(true);
+      setSubmitError('');
+      
+      try {
+        // Save to database
+        const savedInvestment = await investmentService.saveInvestment({
+          email,
+          amount: parseFloat(amount),
+          pokemon_name: selectedPokemon.name,
+          pokemon_key: selectedPokemon.key,
+          pokemon_type: selectedPokemon.type,
+          pokemon_rarity: selectedPokemon.rarity
+        });
+        
+        if (savedInvestment) {
+          setShowConfirmation(false);
+          setShowFinalMessage(true);
+          
+          // Call the parent callback after a delay to show the final message
+          setTimeout(() => {
+            onPokemonSelected(selectedPokemon, email, parseFloat(amount));
+          }, 3000);
+        } else {
+          setSubmitError('Failed to save investment. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error saving investment:', error);
+        setSubmitError('An error occurred while saving your investment. Please try again.');
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -313,7 +369,9 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
               You want to invest in <span className="pokemon-name-highlight">{selectedPokemon.name}</span>?
             </p>
             <div className="selected-pokemon-display">
-              <div className="selected-pokemon-sprite">{selectedPokemon.sprite}</div>
+              <div className="selected-pokemon-sprite">
+                <img src={selectedPokemon.sprite} alt={selectedPokemon.name} />
+              </div>
               <div className="pokemon-details">
                 <p><strong>Type:</strong> {selectedPokemon.type}</p>
                 <p><strong>Rarity:</strong> {selectedPokemon.rarity}</p>
@@ -368,15 +426,26 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
               </div>
             </div>
 
+            {submitError && (
+              <div className="error-message">
+                <span className="error-icon">⚠️</span>
+                {submitError}
+              </div>
+            )}
+            
             <div className="confirm-buttons">
               <button 
                 className="btn confirm-btn" 
                 onClick={confirmSelection}
-                disabled={!email}
+                disabled={!email || isSubmitting}
               >
-                Yes, Invest Now!
+                {isSubmitting ? 'Saving...' : 'Yes, Invest Now!'}
               </button>
-              <button className="btn secondary-btn" onClick={cancelSelection}>
+              <button 
+                className="btn secondary-btn" 
+                onClick={cancelSelection}
+                disabled={isSubmitting}
+              >
                 No, let me choose again
               </button>
             </div>
@@ -391,17 +460,60 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
       <section className="pokemon-selection-section">
         <div className="selection-container">
           <div className="final-message">
-            <h2 className="final-title">Congratulations!</h2>
-            <p className="final-text">
-              You and <span className="pokemon-name-highlight">{selectedPokemon.name}</span> are now investment partners!
-            </p>
-            <div className="final-pokemon-display">
-              <div className="final-pokemon-sprite">{selectedPokemon.sprite}</div>
-              <p className="final-description">Your Pokemon investment journey begins now!</p>
+            <div className="success-celebration">
+              <div className="celebration-icons">
+                <span className="celebration-icon">🎉</span>
+                <span className="celebration-icon">⭐</span>
+                <span className="celebration-icon">🏆</span>
+              </div>
+              <h2 className="final-title">Investment Success!</h2>
             </div>
-            <p className="final-subtext">
-              Take good care of your investment, and together you'll become the very best!
-            </p>
+            
+            <div className="partnership-announcement">
+              <p className="final-text">
+                <span className="highlight-text">Excellent choice, Trainer!</span> You and{' '}
+                <span className="pokemon-name-highlight">{selectedPokemon.name}</span> are now{' '}
+                <span className="partnership-highlight">investment partners!</span>
+              </p>
+            </div>
+
+            <div className="final-pokemon-display">
+              <div className="pokemon-celebration-frame">
+                <div className="final-pokemon-sprite">
+                  <img src={selectedPokemon.sprite} alt={selectedPokemon.name} />
+                </div>
+                <div className="pokemon-stats">
+                  <div className="stat-badge type-badge">
+                    <span className="stat-label">Type:</span>
+                    <span className="stat-value" style={{ color: getTypeColor(selectedPokemon.type) }}>
+                      {selectedPokemon.type}
+                    </span>
+                  </div>
+                  <div className="stat-badge rarity-badge">
+                    <span className="stat-label">Rarity:</span>
+                    <span className="stat-value" style={{ color: getRarityColor(selectedPokemon.rarity) }}>
+                      {selectedPokemon.rarity}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="journey-message">
+                <p className="final-description">
+                  <span className="journey-highlight">Your Pokemon investment journey begins now!</span>
+                </p>
+                <p className="journey-subtext">
+                  {selectedPokemon.name} is ready to help you build your portfolio and catch those profits! 
+                  <span className="sparkle"> ✨</span>
+                </p>
+              </div>
+            </div>
+
+            <div className="next-steps">
+              <p className="next-steps-text">
+                <span className="steps-highlight">What's next?</span> Keep an eye on your email for investment updates and portfolio performance!
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -420,11 +532,14 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
           <span className="pokemon-highlight" style={{ color: getRarityColor(pokemonList[currentIndex].rarity) }}>
             {pokemonList[currentIndex].name}
           </span> 
-          is perfect for your 
+          , is perfect for your -
           <span className="amount-highlight" style={{ color: getRarityColor(pokemonList[currentIndex].rarity) }}>
-            ${parseFloat(amount).toLocaleString()}
+            ${pokemonList[currentIndex].key === 'mewtwo' ? '1,000,000' :
+              pokemonList[currentIndex].key === 'pikachu' ? '500,000' :
+              pokemonList[currentIndex].key === 'charmander' ? '100,000' :
+              pokemonList[currentIndex].key === 'squirtle' ? '50,000' : '10,000'}
           </span> 
-          investment.
+          -investment.
           Use arrows to browse, SPACE to select!
         </div>
         
@@ -452,21 +567,43 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({ onPokemonSelected }
                     }
                   }}
                 >
-                  <div className="pokeball"></div>
-                  <div className="pokemon-sprite">{pokemon.sprite}</div>
+                  <div className="pokeball">
+                    <img 
+                      src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" 
+                      alt="Pokeball" 
+                      className="pokeball-image"
+                    />
+                  </div>
+                  <div className="pokemon-sprite">
+                    <img src={pokemon.sprite} alt={pokemon.name} />
+                  </div>
                   <div 
                     className="pokemon-name" 
-                    style={{ color: getRarityColor(pokemon.rarity) }}
+                    style={{ color: getTypeColor(pokemon.type) }}
                   >
                     {pokemon.name}
                   </div>
                   <div className="pokemon-info">
-                    <div className="pokemon-type">{pokemon.type}</div>
                     <div 
-                      className="pokemon-rarity"
-                      style={{ color: getRarityColor(pokemon.rarity) }}
+                      className="pokemon-type"
+                      style={{ 
+                        backgroundColor: getTypeColor(pokemon.type),
+                        color: '#ffffff'
+                      }}
                     >
-                      {pokemon.rarity}
+                      {pokemon.type}
+                    </div>
+                    <div 
+                      className="investment-cap"
+                      style={{ 
+                        backgroundColor: '#20B2AA',
+                        color: '#ffffff'
+                      }}
+                    >
+                      +${pokemon.key === 'mewtwo' ? '1M' :
+                        pokemon.key === 'pikachu' ? '500K' :
+                        pokemon.key === 'charmander' ? '100K' :
+                        pokemon.key === 'squirtle' ? '50K' : '10K'}
                     </div>
                   </div>
                 </div>
